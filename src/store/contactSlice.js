@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import * as Api from '../services/api';
 
 const initialState = {
   contacts: [
@@ -14,6 +15,9 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
+    setContacts(state, action) {
+      state.contacts = action.payload;
+    },
     setFilter(state, action) {
       state.filter = action.payload;
     },
@@ -28,6 +32,37 @@ const contactsSlice = createSlice({
   },
 });
 
-export const { setFilter, addContact, deleteContact } = contactsSlice.actions;
+export const { setContacts, setFilter, addContact, deleteContact } =
+  contactsSlice.actions;
 
 export default contactsSlice.reducer;
+
+export const fetchContacts = () => async dispatch => {
+  try {
+    const fetchedContacts = await Api.fetchContacts();
+    dispatch(setContacts(fetchedContacts));
+  } catch (error) {
+    // Handle error fetching contacts
+    console.error('Error fetching contacts:', error.message);
+  }
+};
+
+export const addNewContact = contactData => async dispatch => {
+  try {
+    const newContact = await Api.addNewContact(contactData);
+    dispatch(addContact(newContact));
+  } catch (error) {
+    // Handle error adding contact
+    console.error('Error adding contact:', error.message);
+  }
+};
+
+export const deleteContactById = contactId => async dispatch => {
+  try {
+    await Api.deleteContactById(contactId);
+    dispatch(deleteContact(contactId));
+  } catch (error) {
+    // Handle error deleting contact
+    console.error('Error deleting contact:', error.message);
+  }
+};
