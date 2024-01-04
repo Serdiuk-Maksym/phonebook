@@ -7,6 +7,8 @@ export const Filter = ({ filter, onChange }) => {
     onChange(event.target.value);
   };
 
+  const filterValue = filter || '';
+
   return (
     <div className={css.filter}>
       <label className={css.label}>
@@ -15,7 +17,7 @@ export const Filter = ({ filter, onChange }) => {
           className={css.input}
           type="text"
           name="filter"
-          value={filter}
+          value={filterValue}
           onChange={handleChange}
         />
       </label>
@@ -24,6 +26,6 @@ export const Filter = ({ filter, onChange }) => {
 };
 
 Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
+  filter: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };

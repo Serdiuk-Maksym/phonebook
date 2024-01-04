@@ -15,8 +15,10 @@ import {
 import { AppSection, TitleOne } from './APP.styled';
 
 export const App = () => {
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.contacts.filter);
+  const isLoading = useSelector(state => state.contacts.isLoading);
+  const error = useSelector(state => state.contacts.error);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,11 +65,19 @@ export const App = () => {
       <ContactForm onSubmitHandler={formSubmitSearchHandler} />
       <h2>Contacts</h2>
       <Filter filter={filter} onChange={inputChangeValue} />
-      <ContactList
-        contacts={contacts}
-        filter={filter}
-        onDeleteItem={deleteItem}
-      />
+      <div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <ContactList
+            contacts={contacts}
+            filter={filter}
+            onDeleteItem={deleteItem}
+          />
+        )}
+      </div>
     </AppSection>
   );
 };

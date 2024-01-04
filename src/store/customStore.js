@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './rootReducer';
+import contactsReducer from './contactSlice';
 
 const store = configureStore({
-  reducer: rootReducer,
-  // Додаткові параметри конфігурації, якщо потрібно
+  reducer: {
+    contacts: contactsReducer,
+  },
 });
 
 export default store;

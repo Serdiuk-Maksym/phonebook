@@ -4,7 +4,7 @@ import { Contact } from 'components/Contact/Contact';
 
 export function ContactList({ contacts, filter, onDeleteItem }) {
   const calculateFilteredContacts = (contacts, filter) => {
-    const normalizedFilter = filter.toLowerCase();
+    const normalizedFilter = filter ? filter.toLowerCase() : ''; // Перевірка на пусте значення або undefined
     return contacts.filter(
       contact =>
         typeof contact.name === 'string' &&
@@ -12,7 +12,8 @@ export function ContactList({ contacts, filter, onDeleteItem }) {
     );
   };
 
-  const visibleContacts = calculateFilteredContacts(contacts, filter);
+  const visibleContacts =
+    contacts && filter ? calculateFilteredContacts(contacts, filter) : [];
 
   return visibleContacts.map(contact => (
     <Contact
