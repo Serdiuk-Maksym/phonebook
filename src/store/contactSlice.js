@@ -57,7 +57,7 @@ const contactsSlice = createSlice({
 
   reducers: {
     setContacts(state, action) {
-      state.contacts = action.payload;
+      state.contacts.items = action.payload;
     },
     setContactsLoading(state, action) {
       state.contacts.isLoading = action.payload;
