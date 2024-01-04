@@ -8,16 +8,33 @@ import {
   fetchContacts,
   addNewContact,
   deleteContactById,
+  setContactsLoading,
+  setContactsError,
+  setContacts,
 } from '../store/contactSlice';
 import { AppSection, TitleOne } from './APP.styled';
 
 export const App = () => {
   const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
+  const isLoading = useSelector(state => state.contacts.isLoading);
+  const error = useSelector(state => state.contacts.error);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchContacts()); // Fetch contacts from backend on initial load
+    const fetchData = async () => {
+      try {
+        dispatch(setContactsLoading(true));
+        const fetchedContacts = await fetchContacts();
+        dispatch(setContacts(fetchedContacts));
+      } catch (error) {
+        dispatch(setContactsError(error.message));
+      } finally {
+        dispatch(setContactsLoading(false));
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   const inputChangeValue = value => {
@@ -25,9 +42,14 @@ export const App = () => {
   };
 
   const formSubmitSearchHandler = data => {
+    if (contacts.length === 0) {
+      alert('Contacts list is empty');
+      return;
+    }
+
     const searchResult = contacts.find(contact => contact.name === data.name);
     if (!searchResult) {
-      dispatch(addNewContact(data)); // Add new contact via async action
+      dispatch(addNewContact(data));
     } else {
       alert(`${data.name} is already in contacts`);
     }
