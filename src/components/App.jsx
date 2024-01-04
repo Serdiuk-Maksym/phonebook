@@ -42,8 +42,8 @@ export const App = () => {
   };
 
   const formSubmitSearchHandler = data => {
-    if (contacts.length === 0) {
-      alert('Contacts list is empty');
+    if (!contacts || contacts.length === 0) {
+      alert('Contacts list is empty or not loaded yet');
       return;
     }
 
