@@ -17,8 +17,6 @@ import { AppSection, TitleOne } from './APP.styled';
 export const App = () => {
   const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
-  const isLoading = useSelector(state => state.contacts.isLoading);
-  const error = useSelector(state => state.contacts.error);
   const dispatch = useDispatch();
 
   useEffect(() => {
